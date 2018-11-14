@@ -1,23 +1,53 @@
 import React, { Component } from 'react';
 
 import { List, Button, Container, Divider, Grid, Header, Image, Menu, Segment,Item } from 'semantic-ui-react'
+import clientsJSON from '../../data/clients.json';
+import { displayDetails } from "../../actions/index";
+import { connect } from "react-redux";
+import uuidv1 from "uuid";
+import ClientDetails from './ClientDetails';
+
+const mapDispatchToProps = dispatch => {
+  console.log("mapDispatchToProps");
+  return {
+    displayDetails: details => dispatch(displayDetails(details))
+  };
+};
 
 class Client extends Component {
+clients = JSON.parse( JSON.stringify(clientsJSON));
+
   constructor(props){
     super(props);
     this.state = {
-      modal: false,
-      details: "Details"
+      details: " "
     };
-    this.toggle = this.toggle.bind(this);
+
   }
 
-  toggle(){
-    console.log("Click toggle");
-    this.setState({
-      modal: !this.state.modal,
-      details: "This is details"
-    });
+  handleClick(e, data){
+    console.log(e.target);
+    console.log(data.general.firstName);
+    e.preventDefault();
+
+    const id = uuidv1();
+
+    this.props.displayDetails(data);
+    this.setState({ details: "" });
+  }
+
+  dispalayClients(){
+  return ( this.clients.map( obj => (
+      <Item onClick={((e) => this.handleClick(e, obj))}>
+        <Item.Image size='tiny' src={obj.general.avatar} />
+
+        <Item.Content>
+          <Item.Header>{obj.general.firstName +" "+obj.general.lastName} </Item.Header>
+          <Item.Description>{obj.job.title}</Item.Description>
+        </Item.Content>
+      </Item>
+    )
+  ));
   }
   render() {
     return (
@@ -28,7 +58,7 @@ class Client extends Component {
         <Segment style={{overflow: 'auto', maxHeight: '80%' }}>
         <Item.Group link>
 
-      <Item onClick={this.toggle}>
+      <Item key = {2} onClick={((e) => this.handleClick(e, "Mikle Jackson"))}>
         <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
 
         <Item.Content>
@@ -36,94 +66,16 @@ class Client extends Component {
           <Item.Description>Description</Item.Description>
         </Item.Content>
       </Item>
+      {this.dispalayClients()}
 
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/veronika.jpg' />
-
-        <Item.Content>
-          <Item.Header>Veronika Ossi</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-
-        <Item.Content>
-          <Item.Header>Jenny Hess</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-
-        <Item.Content>
-          <Item.Header>Jenny Hess</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-
-        <Item.Content>
-          <Item.Header>Jenny Hess</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-
-        <Item.Content>
-          <Item.Header>Jenny Hess</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-
-        <Item.Content>
-          <Item.Header>Jenny Hess</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-
-        <Item.Content>
-          <Item.Header>Jenny Hess</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-
-        <Item.Content>
-          <Item.Header>Jenny Hess</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-
-        <Item.Content>
-          <Item.Header>Jenny Hess</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-      <Item>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-
-        <Item.Content>
-          <Item.Header>Jenny Hess</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
     </Item.Group>
     </Segment>
         </Grid.Column>
+
         <Grid.Column>
-        {this.state.details}
+          <Segment>
+            <ClientDetails />
+          </Segment>
         </Grid.Column>
 
       </Grid.Row>
@@ -134,4 +86,5 @@ class Client extends Component {
   }
 }
 
-export default Client;
+
+export default connect(null, mapDispatchToProps)(Client);
