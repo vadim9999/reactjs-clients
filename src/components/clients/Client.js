@@ -55,29 +55,20 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
       <Grid columns={2} divided>
       <Grid.Row stretched>
         <Grid.Column width = {4}>
-        <Segment style={{overflow: 'auto', maxHeight: '80%' }}>
-        <Item.Group link>
-
-      <Item key = {2} onClick={((e) => this.handleClick(e, "Mikle Jackson"))}>
-        <Item.Image size='tiny' src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
-
-        <Item.Content>
-          <Item.Header>Stevie Feliciano</Item.Header>
-          <Item.Description>Description</Item.Description>
-        </Item.Content>
-      </Item>
-      {this.dispalayClients()}
-
-    </Item.Group>
-    </Segment>
+          <Segment
+            style={{overflow: 'auto', maxHeight: '80%' }}
+            hidden = {false}>
+            <Item.Group link>
+              {this.dispalayClients()}
+            </Item.Group>
+          </Segment>
         </Grid.Column>
-
         <Grid.Column>
           <Segment>
+            <h3>Details</h3>
             <ClientDetails />
           </Segment>
         </Grid.Column>
-
       </Grid.Row>
     </Grid>
 
