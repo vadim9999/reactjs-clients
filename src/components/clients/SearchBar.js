@@ -3,15 +3,22 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { Search, Grid, Header, Segment } from 'semantic-ui-react'
 import clientsJSON from '../../data/clients.json';
-import { searchresults, hideClients } from "../../actions/index";
+import { searchresults, hideClients, displayDetails } from "../../actions/index";
 import { connect } from "react-redux";
 
 const mapDispatchToProps = dispatch => {
   return {
     searchresults: results => dispatch(searchresults(results)),
-    hideClients: isHidden => dispatch(hideClients(isHidden))
+    hideClients: isHidden => dispatch(hideClients(isHidden)),
+    displayDetails: details => dispatch(displayDetails(details))
   };
 };
+
+const mapStateToProps = state => {
+  return {
+    hidenClients: state.SearchResults.isHiddenClients
+   }
+}
 
 const clients = JSON.parse( JSON.stringify(clientsJSON));
 
@@ -20,6 +27,7 @@ var source =
 clients.map(ob => {
   return {
   "title": ob.general.firstName + " " + ob.general.lastName,
+  "description" : ob.job.title,
   "image": ob.general.avatar
 }
 }
@@ -30,9 +38,22 @@ class SearchBar extends Component {
     this.resetComponent()
   }
 
-  resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
+  resetComponent = () => {
+    console.log("resetComponent");
+    if(this.props.hidenClients === true){
+      this.props.hideClients(false)
+    }
 
-  handleResultSelect = (e, { result }) => this.setState({ value: result.title })
+    return this.setState({ isLoading: false, results: [], value: '' })
+  }
+  handleResultSelect = (e, { result }) =>{
+    console.log(result);
+
+    this.props.searchresults([result]);
+    this.setState({ value: result.title })
+  }
+
+
 
   handleSearchChange = (e, { value }) => {
 
@@ -65,6 +86,7 @@ class SearchBar extends Component {
 
 
     return (
+
       <Grid>
         <Grid.Column width={6}>
           <Search
@@ -86,8 +108,9 @@ class SearchBar extends Component {
           </Segment> */}
         </Grid.Column>
       </Grid>
+
     )
   }
 }
 export default
-connect(null, mapDispatchToProps)(SearchBar);
+connect(mapStateToProps, mapDispatchToProps)(SearchBar);

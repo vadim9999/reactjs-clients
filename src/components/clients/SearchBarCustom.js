@@ -12,5 +12,5 @@ resultRenderer.propTypes = {
   description: PropTypes.string
 }
 
-const SearchBarCustom = () => <SearchBar resultRenderer={resultRenderer} />
+const SearchBarCustom = () => (<SearchBar resultRenderer={resultRenderer} />)
 export default SearchBarCustom

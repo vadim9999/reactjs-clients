@@ -34,18 +34,20 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
       isHiddenClients: false,
       clients: this.clients
     };
-    store.subscribe(() =>{
 
-      console.log(store.getState().SearchResults.isHiddenClients);
-      console.log(store.getState().SearchResults.clients);
-      console.log("getState");
-      console.log(store.getState());
+
+    store.subscribe(() =>{
+    if(store.getState().SearchResults.isHiddenClients){
     this.setState({
       isHiddenClients: store.getState().SearchResults.isHiddenClients,
       clients: store.getState().SearchResults.clients
     })
-    console.log("getState");
-    console.log(store.getState());
+  } else {
+    this.setState({
+      isHiddenClients: store.getState().SearchResults.isHiddenClients,
+      clients: this.clients
+    })
+  }
   })
   }
 
@@ -64,16 +66,21 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
                     isHidden: false});
   }
 
-  handleClickSearch(e, data){
-    e.preventDefault();
+
+  handleClickSearch(e, data1){
+
     var found = this.clients.find(function (obj){
-      return ((obj.general.firstName + " "+obj.general.lastName) === data.title);
+      return ((obj.general.firstName + " "+obj.general.lastName) === data1.title);
     })
     console.log("Found");
     console.log(found);
+    console.log("Data");
+      this.props.displayDetails(found);
+      this.setState({ details: "",
+                      isHidden: false});
   }
 
-  
+
   dispalayClients(clients,isSearch){
     if(isSearch === false){
 
@@ -90,24 +97,24 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
   ));
 }else {
 
-  if(clients != undefined)
-  return (clients.map(function (obj) {
-
-    return(
-      <Item  key = {uuidv1()} onClick={((e) => this.handleClickSearch(e, obj))}>
-        <Item.Image size='tiny' src="https://s3.amazonaws.com/uifaces/faces/twitter/kevinoh/128.jpg" />
+  return (clients.map( obj => (
+      <Item  key = {uuidv1()}
+        onClick={((e) => this.handleClickSearch(e, obj))}
+        >
+        <Item.Image size='tiny' src={obj.image} />
 
         <Item.Content>
-          <Item.Header >{obj.title} </Item.Header>
-          <Item.Description >Ok</Item.Description>
+          <Item.Header>{obj.title} </Item.Header>
+          <Item.Description >{obj.description}</Item.Description>
         </Item.Content>
       </Item>
-    );
-  }
+    )
 
   ))
 }
+
   }
+
   render() {
     return (
       <div>
@@ -115,7 +122,9 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
       <Grid.Row stretched>
         <Grid.Column width = {4}>
           <Segment>
+
             <SearchBarCustom/>
+
           </Segment>
           <Segment
             style={{overflow: 'auto'}}
