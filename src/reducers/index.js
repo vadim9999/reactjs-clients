@@ -1,23 +1,9 @@
+import { combineReducers } from 'redux';
+import Details from "./Details";
+import SearchResults from "./SearchResults";
 
-const initialState = {
-  general: {},
-  job:{},
-  contact:{},
-  address: {}
-};
 
-const rootReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "DISPLAY_DETAILS":
-      return { ...state,
-        general: action.payload.general,
-        job: action.payload.job,
-        contact: action.payload.contact,
-        address: action.payload.address,
-      };
-    default:
-      return state;
-  }
-}
-
-export default rootReducer;
+export default combineReducers({
+  Details,
+  SearchResults
+});
