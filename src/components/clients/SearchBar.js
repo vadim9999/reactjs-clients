@@ -20,14 +20,8 @@ const mapStateToProps = state => {
    }
 }
 
-var source = getClients().map(ob => {
-  return {
-  "title": ob.general.firstName + " " + ob.general.lastName,
-  "description" : ob.job.title,
-  "image": ob.general.avatar
-}
-}
-  );
+var source = getClients();
+
 
 class SearchBar extends Component {
   componentWillMount() {
@@ -44,7 +38,7 @@ class SearchBar extends Component {
 
   handleResultSelect = (e, { result }) =>{
     this.props.searchresults([result]);
-    this.setState({ value: result.title })
+    this.setState({ value: result.general.firstName })
   }
 
   handleSearchChange = (e, { value }) => {
@@ -55,11 +49,46 @@ class SearchBar extends Component {
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
 
-      const isMatch = result => re.test(result.title)
+      const isMatch = result => re.test(result.general.firstName + " "+ result.general.lastName)
+
+      const isMatchJob = result => re.test(result.job.title)
+      const isMatchCompany = result => re.test(result.job.company)
+
+      const isMatchEmail = result => re.test(result.contact.email)
+      const isMatchPhone = result => re.test(result.contact.phone)
+
+      const isMatchStreet = result => re.test(result.address.street)
+      const isMatchCity = result => re.test(result.address.city)
+      const isMatchZipCode = result => re.test(result.address.zipCode)
+      const isMatchCountry = result => re.test(result.address.country)
+
+      var filterByFirstLastName = _.filter(source, isMatch)
+
+      var filterByJob = _.filter(source, isMatchJob)
+      var filterByCompany = _.filter(source, isMatchCompany)
+
+      var filterByEmail = _.filter(source, isMatchEmail)
+      var filterByPhone = _.filter(source, isMatchPhone)
+
+      var filterByStreet = _.filter(source, isMatchStreet)
+      var filterByCity = _.filter(source, isMatchCity)
+      var filterByZipCode = _.filter(source, isMatchZipCode)
+      var filterByCountry = _.filter(source, isMatchCountry)
+
+      var a = [...filterByFirstLastName,...filterByJob,...filterByCompany,
+      ...filterByEmail,...filterByPhone, ...filterByStreet,
+      ...filterByCity, ...filterByZipCode, ...filterByCountry]
+
+      for(var i=0; i<a.length; ++i) {
+       for(var j=i+1; j<a.length; ++j) {
+           if((a[i].general.firstName + " " + a[i].general.lastName) === (a[j].general.firstName + " " + a[j].general.lastName) )
+               a.splice(j--, 1);
+       }
+   }
 
       this.setState({
         isLoading: false,
-        results: _.filter(source, isMatch),
+        results: a,
       })
 
       this.props.searchresults(this.state.results);
@@ -67,9 +96,13 @@ class SearchBar extends Component {
 
     }, 300)
   }
-
+searchGetResults(){
+  if(this.state.results.length > 0){
+    return [this.state.results[0]]
+  }
+}
   render() {
-    const { isLoading, value, results } = this.state
+    const { isLoading, value } = this.state
     return (
       <Grid>
         <Grid.Column width={6}>
@@ -77,8 +110,14 @@ class SearchBar extends Component {
             loading={isLoading}
             onResultSelect={this.handleResultSelect}
             onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
-            results={results}
+            results={[{
+              "title": " ",
+              "description": " ",
+              "image": " ",
+              "price": " "
+            }]}
             value={value}
+            open={false}
             {...this.props}
           />
         </Grid.Column>

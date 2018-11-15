@@ -5,7 +5,7 @@ import { displayDetails } from "../../actions/index";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import ClientDetails from './ClientDetails';
-import SearchBarCustom from "./SearchBarCustom"
+import SearchBar from "./SearchBar"
 import store from '../../store/index';
 import { getClients } from "../selectors/selector";
 
@@ -49,19 +49,8 @@ class Client extends Component {
                     isHidden: false});
   }
 
+  dispalayClients(clients){
 
-  handleClickSearch(e, data1){
-    var found = getClients().find(function (obj){
-      return ((obj.general.firstName + " "+obj.general.lastName) === data1.title);
-    })
-      this.props.displayDetails(found);
-      this.setState({
-                      details: "",
-                      isHidden: false});
-  }
-
-  dispalayClients(clients,isSearch){
-    if(isSearch === false){
       return ( clients.map( obj => (
         <Item  key = {uuidv1()} onClick={((e) => this.handleClick(e, obj))}>
           <Item.Image size='tiny' src={obj.general.avatar} />
@@ -72,19 +61,7 @@ class Client extends Component {
         </Item>
         )
       ));
-    }else {
 
-    return (clients.map( obj => (
-      <Item  key = {uuidv1()}
-        onClick={((e) => this.handleClickSearch(e, obj))}>
-        <Item.Image size='tiny' src={obj.image} />
-        <Item.Content>
-          <Item.Header>{obj.title} </Item.Header>
-          <Item.Description >{obj.description}</Item.Description>
-        </Item.Content>
-      </Item>
-    )))
-    }
   }
 
   render() {
@@ -94,11 +71,11 @@ class Client extends Component {
       <Grid.Row stretched>
         <Grid.Column width = {4}>
           <Segment>
-            <SearchBarCustom/>
+            <SearchBar/>
           </Segment>
           <Segment style={{overflow: 'auto'}}>
             <Item.Group link>
-              {this.dispalayClients(this.state.clients, this.state.isHiddenClients)}
+              {this.dispalayClients(this.state.clients)}
             </Item.Group>
           </Segment>
         </Grid.Column>

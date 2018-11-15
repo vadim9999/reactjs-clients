@@ -3,7 +3,10 @@ import React from 'react'
 import { Label } from 'semantic-ui-react'
 import SearchBar from './SearchBar'
 
-const resultRenderer = ({ title }) => <Label content={title} />;
+const resultRenderer = ( {title} ) => {
+  console.log(title);
+  return (<Label content= {title} />);
+}
 
 resultRenderer.propTypes = {
   title: PropTypes.string,
