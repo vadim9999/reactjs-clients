@@ -5,6 +5,7 @@ import { Search, Grid, Header, Segment } from 'semantic-ui-react'
 import clientsJSON from '../../data/clients.json';
 import { searchresults, hideClients, displayDetails } from "../../actions/index";
 import { connect } from "react-redux";
+import { getClients } from "../selectors/selector";
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -20,11 +21,9 @@ const mapStateToProps = state => {
    }
 }
 
-const clients = JSON.parse( JSON.stringify(clientsJSON));
+// const clients = JSON.parse( JSON.stringify(clientsJSON));
 
-var source =
-
-clients.map(ob => {
+var source = getClients().map(ob => {
   return {
   "title": ob.general.firstName + " " + ob.general.lastName,
   "description" : ob.job.title,
