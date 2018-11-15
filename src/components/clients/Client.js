@@ -19,8 +19,7 @@ const mapDispatchToProps = dispatch => {
 
 // const mapStateToProps = state => {
 //   return {
-//     results: state.SearchResults.clients,
-//     isHiddenClients: false
+//     results: state.SearchResults.clients
 //    }
 // }
 
@@ -37,15 +36,16 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
     };
     store.subscribe(() =>{
 
-      // console.log(store.getState().SearchrRsults.isHiddenClients);
-
-    // this.setState({
-    //   isHiddenClients: store.getState(),
-    //   clients: store.getState()
-    // })
+      console.log(store.getState().SearchResults.isHiddenClients);
+      console.log(store.getState().SearchResults.clients);
+      console.log("getState");
+      console.log(store.getState());
+    this.setState({
+      isHiddenClients: store.getState().SearchResults.isHiddenClients,
+      clients: store.getState().SearchResults.clients
+    })
     console.log("getState");
     console.log(store.getState());
-
   })
   }
 
@@ -64,6 +64,16 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
                     isHidden: false});
   }
 
+  handleClickSearch(e, data){
+    e.preventDefault();
+    var found = this.clients.find(function (obj){
+      return ((obj.general.firstName + " "+obj.general.lastName) === data.title);
+    })
+    console.log("Found");
+    console.log(found);
+  }
+
+  
   dispalayClients(clients,isSearch){
     if(isSearch === false){
 
@@ -79,13 +89,12 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
     )
   ));
 }else {
-  console.log("Clients");
-  console.log(clients);
+
   if(clients != undefined)
   return (clients.map(function (obj) {
 
     return(
-      <Item  key = {uuidv1()} onClick={((e) => this.handleClick(e, obj))}>
+      <Item  key = {uuidv1()} onClick={((e) => this.handleClickSearch(e, obj))}>
         <Item.Image size='tiny' src="https://s3.amazonaws.com/uifaces/faces/twitter/kevinoh/128.jpg" />
 
         <Item.Content>

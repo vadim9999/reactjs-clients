@@ -8,7 +8,8 @@ import { connect } from "react-redux";
 
 const mapDispatchToProps = dispatch => {
   return {
-    searchresults: results => dispatch(searchresults(results))
+    searchresults: results => dispatch(searchresults(results)),
+    hideClients: isHidden => dispatch(hideClients(isHidden))
   };
 };
 
@@ -19,7 +20,7 @@ var source =
 clients.map(ob => {
   return {
   "title": ob.general.firstName + " " + ob.general.lastName,
-  "image": ob.general.avar
+  "image": ob.general.avatar
 }
 }
   );
@@ -35,12 +36,10 @@ class SearchBar extends Component {
 
   handleSearchChange = (e, { value }) => {
 
-//     if(this.state.results.length != 0){
-//     this.props.searchResults(this.state.results);
-//     this.props.hideClients(true)
-// }
-    this.setState({ isLoading: true, value })
+    this.props.searchresults(this.state.results);
+    this.props.hideClients(true)
 
+    this.setState({ isLoading: true, value })
 
     setTimeout(() => {
       if (this.state.value.length < 1) return this.resetComponent()
@@ -55,10 +54,9 @@ class SearchBar extends Component {
         results: _.filter(source, isMatch),
       })
 
-      if(this.state.results.length != 0){
       this.props.searchresults(this.state.results);
-      // this.props.hideClients(false)
-  }
+      this.props.hideClients(true)
+
     }, 300)
   }
 

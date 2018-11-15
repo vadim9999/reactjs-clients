@@ -6,17 +6,18 @@ const initialState = {
 };
 
 const SearchResults = (state = initialState, action) =>{
+  
   switch (action.type) {
     case "SET_SEARCH_RESULTS":
       return {
         ...state,
-        clients : action.payload.results,
+        clients : action.payload,
         isHiddenClients: state.isHiddenClients
       }
     case "HIDE_CLIENTS":
     return {
       ...state,
-      isHiddenClients : action.payload.isHidden,
+      isHiddenClients : action.payload,
       clients: state.clients
     };
 
