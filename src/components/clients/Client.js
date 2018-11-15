@@ -10,7 +10,6 @@ import SearchBarCustom from "./SearchBarCustom"
 import store from '../../store/index';
 
 const mapDispatchToProps = dispatch => {
-  console.log("mapDispatchToProps");
   return {
     displayDetails: details => dispatch(displayDetails(details))
   };
@@ -37,15 +36,14 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
       clients: this.clients
     };
     store.subscribe(() =>{
-      console.log("isHiddenClients");
+
       // console.log(store.getState().SearchrRsults.isHiddenClients);
 
     // this.setState({
     //   isHiddenClients: store.getState(),
     //   clients: store.getState()
     // })
-    console.log("Clients store");
-    console.log(store.getState());
+
 
   })
   }
@@ -55,11 +53,7 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
 
   handleClick(e, data){
     var result = this.clients.map(ob => ob.general)
-    console.log("Result");
-    console.log(result);
-    console.log(e.target);
-    console.log(data.general.firstName);
-    console.log(data.general.avatar);
+
     e.preventDefault();
 
     const id = uuidv1();
@@ -71,7 +65,7 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
 
   dispalayClients(clients,isSearch){
     if(isSearch === false){
-      console.log("Worked");
+
   return ( clients.map( obj => (
       <Item  key = {uuidv1()} onClick={((e) => this.handleClick(e, obj))}>
         <Item.Image size='tiny' src={obj.general.avatar} />
@@ -85,23 +79,22 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
   ));
 }else {
 
-  // if(clients.length != undefined)
-  // return (clients.map(function (obj) {
-  //   console.log("IsSearch");
-  //   console.log(clients);
-  //   return(
-  //     <Item  key = {uuidv1()} onClick={((e) => this.handleClick(e, obj))}>
-  //       <Item.Image size='tiny' src="https://s3.amazonaws.com/uifaces/faces/twitter/kevinoh/128.jpg" />
-  //
-  //       <Item.Content>
-  //         <Item.Header >{obj.title} </Item.Header>
-  //         <Item.Description >Ok</Item.Description>
-  //       </Item.Content>
-  //     </Item>
-  //   );
-  // }
+  if(clients.length != undefined)
+  return (clients.map(function (obj) {
 
-  // ))
+    return(
+      <Item  key = {uuidv1()} onClick={((e) => this.handleClick(e, obj))}>
+        <Item.Image size='tiny' src="https://s3.amazonaws.com/uifaces/faces/twitter/kevinoh/128.jpg" />
+
+        <Item.Content>
+          <Item.Header >{obj.title} </Item.Header>
+          <Item.Description >Ok</Item.Description>
+        </Item.Content>
+      </Item>
+    );
+  }
+
+  ))
 }
   }
   render() {

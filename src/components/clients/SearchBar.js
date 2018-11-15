@@ -7,7 +7,6 @@ import { searchresults, hideClients } from "../../actions/index";
 import { connect } from "react-redux";
 
 const mapDispatchToProps = dispatch => {
-  console.log("mapDispatchToProps");
   return {
     searchresults: results => dispatch(searchresults(results))
   };
@@ -35,8 +34,7 @@ class SearchBar extends Component {
   handleResultSelect = (e, { result }) => this.setState({ value: result.title })
 
   handleSearchChange = (e, { value }) => {
-    console.log("This.state.results");
-    console.log(this.state.results);
+
 //     if(this.state.results.length != 0){
 //     this.props.searchResults(this.state.results);
 //     this.props.hideClients(true)
@@ -48,8 +46,7 @@ class SearchBar extends Component {
       if (this.state.value.length < 1) return this.resetComponent()
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      console.log("re");
-      console.log(re);
+
 
       const isMatch = result => re.test(result.title)
 
@@ -57,8 +54,7 @@ class SearchBar extends Component {
         isLoading: false,
         results: _.filter(source, isMatch),
       })
-      console.log("State timeout");
-      console.log(this.state.results);
+
       if(this.state.results.length != 0){
       this.props.searchresults(this.state.results);
       // this.props.hideClients(false)
@@ -68,8 +64,7 @@ class SearchBar extends Component {
 
   render() {
     const { isLoading, value, results } = this.state
-    console.log("results");
-    console.log(results);
+
 
     return (
       <Grid>
