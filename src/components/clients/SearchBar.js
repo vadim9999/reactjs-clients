@@ -20,8 +20,6 @@ const mapStateToProps = state => {
    }
 }
 
-// const clients = JSON.parse( JSON.stringify(clientsJSON));
-
 var source = getClients().map(ob => {
   return {
   "title": ob.general.firstName + " " + ob.general.lastName,
@@ -37,34 +35,25 @@ class SearchBar extends Component {
   }
 
   resetComponent = () => {
-    console.log("resetComponent");
     if(this.props.hidenClients === true){
       this.props.hideClients(false)
     }
 
     return this.setState({ isLoading: false, results: [], value: '' })
   }
-  handleResultSelect = (e, { result }) =>{
-    console.log(result);
 
+  handleResultSelect = (e, { result }) =>{
     this.props.searchresults([result]);
     this.setState({ value: result.title })
   }
 
-
-
   handleSearchChange = (e, { value }) => {
-
-    this.props.searchresults(this.state.results);
-    this.props.hideClients(true)
-
     this.setState({ isLoading: true, value })
 
     setTimeout(() => {
       if (this.state.value.length < 1) return this.resetComponent()
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-
 
       const isMatch = result => re.test(result.title)
 
@@ -81,10 +70,7 @@ class SearchBar extends Component {
 
   render() {
     const { isLoading, value, results } = this.state
-
-
     return (
-
       <Grid>
         <Grid.Column width={6}>
           <Search
@@ -95,15 +81,6 @@ class SearchBar extends Component {
             value={value}
             {...this.props}
           />
-        </Grid.Column>
-        <Grid.Column width={10}>
-          {/* <Segment>
-            <Header>State</Header>
-            <pre style={{ overflowX: 'auto' }}>{JSON.stringify(this.state, null, 2)}</pre>
-            <Header>Options</Header>
-            <pre style={{ overflowX: 'auto' }}>{JSON.stringify(source, null, 2)}</pre>
-
-          </Segment> */}
         </Grid.Column>
       </Grid>
 
