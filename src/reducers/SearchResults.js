@@ -11,7 +11,7 @@ const SearchResults = (state = initialState, action) =>{
       return {
         ...state,
         clients : action.payload.results,
-        isHiddenClients: state.state.isHiddenClients
+        isHiddenClients: state.isHiddenClients
       }
     case "HIDE_CLIENTS":
     return {
