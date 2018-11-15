@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import {  Grid, Segment,Item } from 'semantic-ui-react'
-import clientsJSON from '../../data/clients.json';
 import { displayDetails } from "../../actions/index";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
@@ -17,7 +16,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 class Client extends Component {
-  // clients = JSON.parse( JSON.stringify(clientsJSON));
 
   constructor(props){
     super(props);
@@ -28,26 +26,26 @@ class Client extends Component {
       clients: getClients()
     };
 
-
     store.subscribe(() =>{
-    if(store.getState().SearchResults.isHiddenClients){
-    this.setState({
-      isHiddenClients: store.getState().SearchResults.isHiddenClients,
-      clients: store.getState().SearchResults.clients
-    })
-  } else {
-    this.setState({
-      isHiddenClients: store.getState().SearchResults.isHiddenClients,
-      clients: getClients()
-    })
-  }
-  })
-  }
+      if(store.getState().SearchResults.isHiddenClients){
+        this.setState({
+          isHiddenClients: store.getState().SearchResults.isHiddenClients,
+          clients: store.getState().SearchResults.clients
+        })
+      } else {
+        this.setState({
+          isHiddenClients: store.getState().SearchResults.isHiddenClients,
+          clients: getClients()
+          })
+        }
+      })
+    }
 
   handleClick(e, data){
     e.preventDefault();
     this.props.displayDetails(data);
-    this.setState({ details: "",
+    this.setState({
+                    details: "",
                     isHidden: false});
   }
 
@@ -57,27 +55,26 @@ class Client extends Component {
       return ((obj.general.firstName + " "+obj.general.lastName) === data1.title);
     })
       this.props.displayDetails(found);
-      this.setState({ details: "",
+      this.setState({
+                      details: "",
                       isHidden: false});
   }
 
-
   dispalayClients(clients,isSearch){
     if(isSearch === false){
+      return ( clients.map( obj => (
+        <Item  key = {uuidv1()} onClick={((e) => this.handleClick(e, obj))}>
+          <Item.Image size='tiny' src={obj.general.avatar} />
+          <Item.Content>
+            <Item.Header >{obj.general.firstName +" "+obj.general.lastName} </Item.Header>
+            <Item.Description >{obj.job.title}</Item.Description>
+          </Item.Content>
+        </Item>
+        )
+      ));
+    }else {
 
-  return ( clients.map( obj => (
-      <Item  key = {uuidv1()} onClick={((e) => this.handleClick(e, obj))}>
-        <Item.Image size='tiny' src={obj.general.avatar} />
-        <Item.Content>
-          <Item.Header >{obj.general.firstName +" "+obj.general.lastName} </Item.Header>
-          <Item.Description >{obj.job.title}</Item.Description>
-        </Item.Content>
-      </Item>
-    )
-  ));
-}else {
-
-  return (clients.map( obj => (
+    return (clients.map( obj => (
       <Item  key = {uuidv1()}
         onClick={((e) => this.handleClickSearch(e, obj))}>
         <Item.Image size='tiny' src={obj.image} />
@@ -86,9 +83,8 @@ class Client extends Component {
           <Item.Description >{obj.description}</Item.Description>
         </Item.Content>
       </Item>
-    )
-  ))
-}
+    )))
+    }
   }
 
   render() {
@@ -101,7 +97,6 @@ class Client extends Component {
             <SearchBarCustom/>
           </Segment>
           <Segment style={{overflow: 'auto'}}>
-
             <Item.Group link>
               {this.dispalayClients(this.state.clients, this.state.isHiddenClients)}
             </Item.Group>
@@ -115,7 +110,6 @@ class Client extends Component {
         </Grid.Column>
       </Grid.Row>
     </Grid>
-
     </div>
     );
   }

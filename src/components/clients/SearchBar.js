@@ -1,8 +1,7 @@
 import _ from 'lodash'
 
 import React, { Component } from 'react'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
-import clientsJSON from '../../data/clients.json';
+import { Search, Grid } from 'semantic-ui-react'
 import { searchresults, hideClients, displayDetails } from "../../actions/index";
 import { connect } from "react-redux";
 import { getClients } from "../selectors/selector";
