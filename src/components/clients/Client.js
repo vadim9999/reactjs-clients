@@ -43,7 +43,8 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
     //   isHiddenClients: store.getState(),
     //   clients: store.getState()
     // })
-
+    console.log("getState");
+    console.log(store.getState());
 
   })
   }
@@ -78,8 +79,9 @@ clients = JSON.parse( JSON.stringify(clientsJSON));
     )
   ));
 }else {
-
-  if(clients.length != undefined)
+  console.log("Clients");
+  console.log(clients);
+  if(clients != undefined)
   return (clients.map(function (obj) {
 
     return(
