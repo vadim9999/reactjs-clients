@@ -17,3 +17,4 @@ Prettty self-explanatory, on the left there are fill size avatar (128x128px), ne
 Used this technology:
 * ReactJS
 * Semantic-UI framework
+* Redux
