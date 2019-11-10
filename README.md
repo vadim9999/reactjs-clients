@@ -1,5 +1,14 @@
 # reactjs-clients
 
+
+## Screenshots 
+
+<img src="https://github.com/vadim9999/reactjs-clients/blob/master/screenshots/screenshot1.png">
+
+<img src="https://github.com/vadim9999/reactjs-clients/blob/master/screenshots/screenshot2.png">
+
+<img src="https://github.com/vadim9999/reactjs-clients/blob/master/screenshots/screenshot3.png">
+
 Created onepage application with list of clients ant their details using React and Semantic-UI framework. Clients data are stored in 'clients.json'.
 
 **Clients list consists**
